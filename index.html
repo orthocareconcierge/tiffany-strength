@@ -69,6 +69,10 @@ body{font-family:'Jost',sans-serif;background:var(--black);color:var(--white);mi
 .log-row .setn{font-size:10px;color:var(--muted);width:38px;flex-shrink:0;letter-spacing:0.05em;}
 .log-in{flex:1;background:var(--dark);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:var(--white);font-family:'Jost',sans-serif;font-size:12px;padding:7px 8px;min-width:0;}
 .log-in::placeholder{color:var(--mid);}
+.log-day{background:var(--charcoal);border:1px solid rgba(201,168,76,0.18);border-radius:10px;padding:13px 14px;margin-bottom:10px;}
+.log-day-date{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);margin-bottom:9px;}
+.log-card-ex{padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:13px;color:var(--white);line-height:1.5;}
+.log-card-ex:last-child{border-bottom:none;}
 .log-in:focus{outline:none;border-color:var(--gold);}
 .add-set{background:none;border:1px dashed rgba(201,168,76,0.3);color:var(--gold);border-radius:6px;font-family:'Jost',sans-serif;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:6px;width:100%;cursor:pointer;margin-top:2px;}
 .guide-block{margin-bottom:18px;}
@@ -90,18 +94,22 @@ body{font-family:'Jost',sans-serif;background:var(--black);color:var(--white);mi
   <div class="gold-line"></div>
   <div class="client-hero"><h1 id="hero-name">Tiffany</h1><p class="subtitle">Strength &amp; Aquatic Program</p></div>
   <div class="nav-grid">
+    <div class="nav-card" onclick="go('page-pt')"><span class="nav-icon">&#129504;</span><h3>PT</h3><p>Core, hip &amp; posture</p></div>
     <div class="nav-card" onclick="go('page-pool')"><span class="nav-icon">&#127754;</span><h3>Pool</h3><p>Aquatic therapy</p></div>
     <div class="nav-card" onclick="go('page-strength')"><span class="nav-icon">&#127947;&#65039;</span><h3>Strength</h3><p>Machine &amp; band</p></div>
     <div class="nav-card" onclick="go('page-cardio')"><span class="nav-icon">&#128694;</span><h3>Cardio &amp; Stairs</h3><p>Treadmill &amp; stairs</p></div>
     <div class="nav-card" onclick="go('page-guide')"><span class="nav-icon">&#128161;</span><h3>Guidelines</h3><p>How to use this</p></div>
+    <div class="nav-card" onclick="go('page-log')"><span class="nav-icon">&#128203;</span><h3>My Log</h3><p>Past sessions</p></div>
   </div>
   <p class="proprietary-line">&copy; OrthoCare Concierge LLC | Kelly Davis<br>Proprietary and confidential.</p>
 </div>
 
+<div id="page-pt" class="page"><div class="page-header"><button class="back-btn" onclick="go('splash')">&larr; Home</button><h2>PT</h2><p class="page-sub">Core, hip &amp; posture</p></div><div class="page-content"><div class="intro-card"><p id="pt-intro"></p></div><div class="prog-pill" id="pt-prog">0 of 0 done today</div><div id="pt-list"></div></div></div>
 <div id="page-pool" class="page"><div class="page-header"><button class="back-btn" onclick="go('splash')">&larr; Home</button><h2>Pool</h2><p class="page-sub">Aquatic therapy</p></div><div class="page-content"><div class="intro-card"><p id="pool-intro"></p></div><div class="prog-pill" id="pool-prog">0 of 0 done today</div><div id="pool-list"></div></div></div>
 <div id="page-strength" class="page"><div class="page-header"><button class="back-btn" onclick="go('splash')">&larr; Home</button><h2>Strength</h2><p class="page-sub">Machine &amp; band</p></div><div class="page-content"><div class="intro-card"><p id="strength-intro"></p></div><div class="prog-pill" id="strength-prog">0 of 0 done today</div><div id="strength-list"></div></div></div>
 <div id="page-cardio" class="page"><div class="page-header"><button class="back-btn" onclick="go('splash')">&larr; Home</button><h2>Cardio &amp; Stairs</h2><p class="page-sub">Treadmill &amp; stairs</p></div><div class="page-content"><div class="intro-card"><p id="cardio-intro"></p></div><div class="prog-pill" id="cardio-prog">0 of 0 done today</div><div id="cardio-list"></div></div></div>
 <div id="page-guide" class="page"><div class="page-header"><button class="back-btn" onclick="go('splash')">&larr; Home</button><h2>Guidelines</h2><p class="page-sub">How to use this</p></div><div class="page-content" id="guide-content"></div></div>
+<div id="page-log" class="page"><div class="page-header"><button class="back-btn" onclick="go('splash')">&larr; Home</button><h2>My Log</h2><p class="page-sub">Your past sessions</p></div><div class="page-content" id="log-content"></div></div>
 
 <script>
 /* =====================================================================
@@ -110,6 +118,29 @@ body{font-family:'Jost',sans-serif;background:var(--black);color:var(--white);mi
 const CLIENT_NAME = 'Tiffany';
 
 const SECTIONS = {
+  pt: { key:'pt', log:false,
+    intro:'Your PT foundation. Gentle core, hip, and posture work to keep your spine and hips supported and your nerves moving freely. Breathe easily throughout and keep everything in a comfortable, pain-free range. Do these regularly, any time.',
+    items:[
+      { name:'Transversus Abdominis Hold', rx:'5 sec hold · 10 reps · every hour', video:'transverse-abdominus.mp4',
+        cues:['Find your hip bones at the front and hook your fingers just inside them on either side.','Gently draw your lower belly inward and feel the muscle pop up under your fingers.','Keep breathing normally. Do not hold your breath or tuck the pelvis.','This is a low-effort, deep contraction, not a hard brace.'] },
+      { name:'Pelvic Tilt', rx:'5 sec holds · 10 reps · as needed to reset', video:'pelvic-tilt.mp4',
+        cues:['Lie on your back with knees bent and feet flat.','Gently flatten your low back into the floor by tilting the pelvis, then release.','Keep it a small, controlled motion. Use it to reset whenever the back feels stiff.'] },
+      { name:'Bridging', rx:'12 reps · 3 sec hold · 2 sets', video:'bridge.mp4',
+        cues:['Lie on your back with knees bent and feet flat, hip-width apart.','Engage belly button to spine, tilt your pelvis under so your low back is flat on the floor.','Press through your heels and lift your hips up, squeezing your glutes at the top. Do not drop the pelvic tilt or core engagement.','Drive from the glutes, not the low back. Do not arch.','Lower with control. Keep the rib cage down throughout.'] },
+      { name:'Sidelying Clams', rx:'12 to 15 reps · 2 sets', video:'sidelying-clams.mp4',
+        cues:['Lie on your side with hips and knees bent and heels together.','Keep the heels touching and lift the top knee, opening like a clam.','Do not let the top hip roll back. The motion is at the hip, not the spine.'] },
+      { name:'Sidelying Hip Abduction', rx:'12 to 15 reps · 2 sets', video:'',
+        cues:['Lie on your side in a straight line, bottom knee bent for stability.','Lift the top leg, leading with the heel and keeping the toes pointed forward.','Keep your hips stacked. Do not roll backward as you lift.'] },
+      { name:'Sciatic Nerve Glide', rx:'30 reps · 3 sets · 3x daily', video:'sciatic-nerve-glide.mp4',
+        cues:['Lie on your back and hold behind one knee, bent to 90 degrees.','Point your toes, then straighten the knee until you feel a pull in the back of your leg.','Flip your toes back toward your nose, then return the knee to 90 degrees.','Move in a smooth, continuous motion, and do it on both sides.','This is a glide, not a stretch. Stop short of any numbness or tingling.'] },
+      { name:'Hip Hinge', rx:'10 reps · 5 sec hold · 2 sets', video:'hip-hinge.mp4',
+        cues:['Stand tall with a slight bend in your knees.','Draw your belly button toward your spine and tuck your pelvis under.','Shift your hips backward, keeping the whole trunk long and neutral. Hinge, do not round.','Use a pole along your back for feedback.','Hold briefly, then drive your hips forward to stand tall.'] },
+      { name:'Posture Openers', rx:'5 sec holds · 5 reps · every hour', video:'posture-openers.mp4',
+        cues:['Stand tall with your arms relaxed by your sides.','Rotate your palms outward so they face forward.','Squeeze your shoulder blades back and down, then hold for 5 seconds.'] },
+      { name:'Snow Angels on Foam Roller', rx:'15 reps · 1 set · daily', video:'',
+        cues:['Lie lengthwise along the foam roller with your head and pelvis supported, knees bent and feet flat for stability.','Start with your arms down by your sides, palms down.','Lift both arms overhead with your elbows by your ears and palms facing up.','Slowly cactus the arms by bending the elbows, keeping the backs of your hands and your elbows as close to the floor as possible.','Once in the field goal post position, keep the bend in your elbows and draw them down toward your waist, then cycle again from the start.'] }
+    ]
+  },
   pool: { key:'pool', log:false,
     intro:'Pool work is one of the best things you can do right now. The water carries your weight, helps bring down the swelling in your hands, and is the resistance itself, so there is no gripping. Open, relaxed hands throughout. Do this any time.',
     items:[
@@ -129,24 +160,26 @@ const SECTIONS = {
         cues:['Stand tall with a soft bend in the knees, hands together or arms out in the water.','Rotate your trunk side to side, letting the water resist the turn.','Keep the motion smooth and controlled, moving from the trunk.'] }
     ]},
   strength: { key:'strength', log:true,
-    intro:'Machine, band, and hands-free work so you never have to grip or push. Use wrist straps where you can so the weight hangs from the strap, not your palm. Moderate loads, higher reps, and exhale on every effort. Pick a mix each session.',
+    intro:'Machine, band, and hands-free work so you never have to grip or push. Use wrist straps where you can so the weight hangs from the strap, not your palm. We are shifting to heavier loads and lower reps now that your body is tolerating it well, and exhale on every effort. Pick a mix each session.',
     items:[
-      { name:'Leg Press', rx:'12 to 20 reps · 2 to 3 sets', video:'leg-press.mp4',
+      { name:'Leg Press', rx:'5 to 8 reps · 2 to 3 sets · heavier', video:'leg-press.mp4',
         cues:['This is your main lower-body lift and needs no hand grip.','Press through your whole foot and exhale as you push. Do not slam the knees into a lock.','Lower with control. Keep it moderate, not maximal.'] },
-      { name:'Seated Leg Curl', rx:'12 to 20 reps · 2 to 3 sets', video:'',
+      { name:'Seated Leg Curl', rx:'5 to 8 reps · 2 to 3 sets · heavier', video:'',
         cues:['Set up with the pad on the back of your lower legs.','Curl your heels down and under, squeezing the back of the thighs, then return slowly.'] },
-      { name:'Leg Extension', rx:'12 to 20 reps · 2 to 3 sets', video:'',
+      { name:'Leg Extension', rx:'5 to 8 reps · 2 to 3 sets · heavier', video:'',
         cues:['Straighten your knees to lift the pad, squeezing the fronts of the thighs.','Stop just short of a hard lockout and lower with control.'] },
-      { name:'Hip Abduction and Adduction Machine', rx:'15 to 20 reps · 2 sets each', video:'',
+      { name:'Hip Abduction and Adduction Machine', rx:'5 to 8 reps · 2 sets each · heavier', video:'',
         cues:['Press your knees out against the pads for abduction.','Switch the setup and press your knees in for adduction.','Move slowly and control the return each way.'] },
-      { name:'Calf Raise', rx:'15 to 20 reps · 2 to 3 sets', video:'heel-raises.mp4',
+      { name:'Calf Raise', rx:'5 to 8 reps · 2 to 3 sets · heavier', video:'heel-raises.mp4',
         cues:['On a machine or holding a rail, rise up onto the balls of your feet.','Lower slowly with control. Keep the ankles tracking straight.'] },
-      { name:'Banded Hip Hinge', rx:'12 to 15 reps · 2 to 3 sets', video:'hip-hinge.mp4',
+      { name:'Banded Hip Hinge', rx:'5 to 8 reps · 2 to 3 sets · heavier band', video:'hip-hinge.mp4',
         cues:['Loop a mobility band around your hips and anchor it in front of you at hip height.','Let the band pull your hips forward, then hinge your hips straight back against it with a long flat back.','Drive your hips forward to stand tall and squeeze your glutes. No weight in your hands.','Keep the movement at the hips, not the low back.'] },
-      { name:'Seated Row with Straps', rx:'12 to 15 reps · 2 to 3 sets', video:'',
+      { name:'Seated Row with Straps', rx:'5 to 8 reps · 2 to 3 sets · heavier', video:'',
         cues:['Use wrist straps so the weight hangs from the strap, not your grip.','Row to your ribs, leading with the elbows and squeezing your shoulder blades.','Return slowly. Keep your shoulders down, do not shrug.'] },
-      { name:'Lat Pulldown with Straps', rx:'12 to 15 reps · 2 to 3 sets', video:'',
-        cues:['Use wrist straps so your hands do the minimum work.','Pull the bar down toward your collarbone, leading with the elbows.','Control the bar back up. Keep your shoulders down.'] },
+      { name:'Lat Prayers', rx:'8 to 10 reps · 3 to 5 sec hold · 2 sets', video:'',
+        cues:['Kneel in front of a bench or box and rest your forearms on top, palms together like a prayer.','Keeping your arms where they are, sit your hips back and let your chest sink down between your arms until you feel a stretch and pull through your lats and the sides of your back.','Gently press your forearms down into the bench to switch the lats on, hold, then relax.','Keep your hands and grip relaxed throughout.'] },
+      { name:'Banded Pull-Up', rx:'6 to 8 reps · 2 to 3 sets · heavier band', video:'',
+        cues:['Anchor a mobility band to a high bar or anchor point overhead.','Hold the band with both hands, arms long, using an open relaxed grip or wrist straps so your hands do the minimum work.','Pull your elbows down and in toward your ribs to bring your hands toward your shoulders, mimicking the pulling part of a pull-up, and squeeze your shoulder blades down and back.','Control the band slowly back up to the long-arm start. No hard gripping.'] },
       { name:'Band Pull-Aparts', rx:'15 to 20 reps · 2 sets', video:'er-pull-outs.mp4',
         cues:['Hold a band in front at shoulder height with open, relaxed hands.','Pull the band apart by squeezing your shoulder blades, then return slowly.','Keep your shoulders down, do not shrug.'] },
       { name:'Pallof Press', rx:'hold 20 to 30 sec · 3 each side', video:'pallof-isometric.mp4',
@@ -171,7 +204,7 @@ const GUIDE = {
   tips:[
     'Protect your hands: stick to machines, bands, and holds where the weight hangs. A pair of lifting straps lets the weight hang from the strap instead of your grip, which opens up rows, pulldowns, and hinges. Skip anything that makes you grip hard or push.',
     'Breathe through every rep. Exhale on the effort and do not hold your breath or bear down.',
-    'Keep loads moderate and the reps higher. Strong and controlled beats heavy.',
+    'We are now working in a heavier, lower rep range since your body is tolerating it well. Keep every rep strong and controlled, and stop a rep or two short of failure.',
     'In the pool, let your hands stay open and relaxed. The water is the resistance.'
   ],
   flags:[
@@ -189,16 +222,18 @@ let store={}; try{store=JSON.parse(localStorage.getItem(NS))||{};}catch(e){}
 function persist(){try{localStorage.setItem(NS,JSON.stringify(store));}catch(e){}}
 function todayStr(){return new Date().toISOString().slice(0,10);}
 function ck(sec,i){return 'chk-'+todayStr()+'-'+sec+'-'+i;}
-function lk(sec,i){return 'log-'+sec+'-'+i;}
+function lk(sec,i){return 'log-'+todayStr()+'-'+sec+'-'+i;}
 
 function go(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('splash').style.display=(id==='splash')?'flex':'none';
   if(id!=='splash') document.getElementById(id).classList.add('active');
+  if(id==='page-pt') renderSection('pt');
   if(id==='page-pool') renderSection('pool');
   if(id==='page-strength') renderSection('strength');
   if(id==='page-cardio') renderSection('cardio');
   if(id==='page-guide') renderGuide();
+  if(id==='page-log') renderLog();
   window.scrollTo(0,0);
 }
 
@@ -217,8 +252,9 @@ function card(sec,i,ex,log){
     const sets=store[lk(sec,i)]||[{},{},{}];
     const rows=sets.map((s,si)=>`<div class="log-row"><span class="setn">Set ${si+1}</span>`+
       `<input class="log-in" inputmode="numeric" placeholder="reps" value="${s.reps||''}" onchange="setLog('${sec}',${i},${si},'reps',this.value)">`+
-      `<input class="log-in" placeholder="weight" value="${s.load||''}" onchange="setLog('${sec}',${i},${si},'load',this.value)"></div>`).join('');
-    loghtml=`<div class="log-wrap"><div class="log-title">Log your sets</div>${rows}<button class="add-set" onclick="addSet('${sec}',${i})">+ Add set</button></div>`;
+      `<input class="log-in" placeholder="weight" value="${s.load||''}" onchange="setLog('${sec}',${i},${si},'load',this.value)">`+
+      `<input class="log-in" style="flex:0.6" inputmode="decimal" placeholder="RPE" value="${s.rpe||''}" onchange="setLog('${sec}',${i},${si},'rpe',this.value)"></div>`).join('');
+    loghtml=`<div class="log-wrap"><div class="log-title">Log your sets \u00b7 reps / weight / RPE</div>${rows}<button class="add-set" onclick="addSet('${sec}',${i})">+ Add set</button></div>`;
   }
   return `<div class="ex-card${done?' done':''}" id="c-${sec}-${i}">
     <div class="ex-head">
@@ -243,6 +279,31 @@ function renderGuide(){
     `<div class="rep-foot">OrthoCare Concierge LLC | Kelly Davis<br>Proprietary and confidential</div>`;
 }
 
+function fmtDate(d){ try{ return new Date(d+'T00:00:00').toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric',year:'numeric'}); }catch(e){ return d; } }
+function renderLog(){
+  var today=todayStr(), byDate={};
+  Object.keys(store).forEach(function(k){
+    var m=k.match(/^log-(\d{4}-\d{2}-\d{2})-([a-z]+)-(\d+)$/);
+    if(!m) return;
+    var date=m[1], sec=m[2], idx=+m[3];
+    if(date===today) return;
+    var sets=store[k]; if(!Array.isArray(sets)) return;
+    var logged=sets.filter(function(s){return s.reps||s.load||s.rpe;});
+    if(!logged.length) return;
+    var nm=(SECTIONS[sec]&&SECTIONS[sec].items[idx])?SECTIONS[sec].items[idx].name:'Exercise';
+    (byDate[date]=byDate[date]||[]).push({name:nm,sets:logged});
+  });
+  var dates=Object.keys(byDate).sort().reverse();
+  var box=document.getElementById('log-content');
+  if(!dates.length){ box.innerHTML='<div class="intro-card"><p>No past sessions logged yet. Log a workout, and once a new day begins it will show up here so you can look back.</p></div>'; return; }
+  box.innerHTML=dates.map(function(d){
+    var items=byDate[d].map(function(it){
+      var rows=it.sets.map(function(s,si){ var pp=[]; if(s.reps)pp.push(s.reps+' reps'); if(s.load)pp.push(s.load); var tt=pp.join(' @ '); if(s.rpe)tt+=(tt?' \u00b7 ':'')+'RPE '+s.rpe; return 'Set '+(si+1)+': '+tt; }).join('<br>');
+      return '<div class="log-card-ex"><b>'+it.name+'</b><br>'+rows+'</div>';
+    }).join('');
+    return '<div class="log-day"><div class="log-day-date">'+fmtDate(d)+'</div>'+items+'</div>';
+  }).join('');
+}
 document.title=CLIENT_NAME+' | OrthoCare Concierge';
 document.getElementById('hero-name').textContent=CLIENT_NAME;
 </script>

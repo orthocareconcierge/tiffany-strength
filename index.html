@@ -245,7 +245,7 @@ function renderSection(key){
 }
 function card(sec,i,ex,log){
   const done=!!store[ck(sec,i)];
-  const vid=ex.video?`<div class="ex-vid"><video src="${ex.video}?v=1" autoplay muted loop playsinline preload="metadata"></video></div>`:'';
+  const vid=ex.video?`<div class="ex-vid"><video src="${ex.video}?v=2" autoplay muted loop playsinline preload="metadata"></video></div>`:'';
   const cues='<ul>'+ex.cues.map(c=>`<li>${c}</li>`).join('')+'</ul>';
   let loghtml='';
   if(log){
